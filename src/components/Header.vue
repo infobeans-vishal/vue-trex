@@ -13,7 +13,7 @@
                   v-if="!drawer.permanent"
                   @click="makeDrawerPermanent">
                   <v-list-tile-action>
-                     <v-icon>chevron_right</v-icon>
+                     <v-icon >chevron_right</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
                      <v-list-tile-title>Static Drawer</v-list-tile-title>
@@ -28,7 +28,7 @@
                   </v-list-tile-content>
                </v-list-tile>
                <v-divider></v-divider>
-               <v-list-tile v-for="item in items" v-bind:key="item.title" @click="">
+               <!-- <v-list-tile v-for="item in items" v-bind:key="item.title" @click="">
                   <v-list-tile-action>
                      <v-icon>{{ item.icon }}</v-icon>
                   </v-list-tile-action>
@@ -36,26 +36,24 @@
                      <v-list-tile-title>{{ item.title }}</v-list-tile-title>
                   </v-list-tile-content>
                </v-list-tile>
-               <!-- <v-list-group :value="item.active" v-for="item in items" v-bind:key="item.title" :prepend-icon="item.action" no-action >
-                  <v-list-tile slot="activator" @click="">
-                  	<v-list-tile-action>
-                  		<v-icon>{{ item.icon }}</v-icon>
-                  	</v-list-tile-action>
-                  	<v-list-tile-content>
-                  		<v-list-tile-title>{{ item.title }} </v-list-tile-title>
-                  	</v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile v-for="subItem in item.items" :key="subItem.title" ripple @click="">
-                  	<v-list-tile-action>
-                  		<v-icon>{{ subItem.icon }}</v-icon>
-                  	</v-list-tile-action>
-                  	<v-list-tile-content>
-                  		<v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
-                  	</v-list-tile-content>
-                  </v-list-tile>
-                  </v-list-group> -->
-            </v-list>
-         </v-navigation-drawer>
+                -->
+
+		<v-list-group :prepend-icon="item.icon" v-for="item in items" v-bind:key="item.title">
+			<template v-slot:activator>
+				<v-list-tile >
+					<v-list-tile-title>{{item.title}}</v-list-tile-title>
+				</v-list-tile>
+			</template>
+			<v-list-group :prepend-icon="subItem.icon" sub-group no-action v-for="subItem in item.items" :key="subItem.title">
+				<template v-slot:activator>
+					<v-list-tile>
+						<v-list-tile-title>{{subItem.title}}</v-list-tile-title>
+					</v-list-tile>
+				</template>
+			</v-list-group>
+		</v-list-group>
+		</v-list>
+        </v-navigation-drawer>
          <v-toolbar
             app
             :fixed="toolbar.fixed"
@@ -67,6 +65,23 @@
                @click.stop="toggleDrawer"
                ></v-toolbar-side-icon>
             <v-toolbar-title>Vuetify Drawer Example</v-toolbar-title>
+			<v-spacer></v-spacer>
+			<v-toolbar-items>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                        <v-btn icon v-on="on">
+                            <v-avatar size="40" color="grey lighten-4">
+                                <img src="https://randomuser.me/api/portraits/men/85.jpg">
+                            </v-avatar>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-tile v-for="(item, index) in header_menu" :key="index" >
+                            <v-list-tile-title :to="item.link">{{ item.title }}</v-list-tile-title>
+                        </v-list-tile>
+                    </v-list>
+                </v-menu>
+            </v-toolbar-items>
          </v-toolbar>
          <Content></Content>
          <v-footer app :fixed="footer.fixed" :clipped-left="footer.clippedCenter " class="deep-purple">
@@ -82,8 +97,8 @@ import Content from './Content'
 	export default {
 		name: 'app-header',
 		components: {
-        	Content
-    	},
+			Content
+		},
 		data: () => ({
 			drawer: {
 				// sets the open status of the drawer
@@ -126,7 +141,8 @@ import Content from './Content'
 			items: [{
 					title: 'Dashboard',
 					active: true,
-					icon: 'dashboard',
+					icon: 'home',
+					link: '/'
 				},
 				{
 					title: 'Certifications',
@@ -135,6 +151,8 @@ import Content from './Content'
 					items: [{
 							title: 'Search Certification',
 							icon: 'search',
+							link: '/certificates',
+
 						},
 						{
 							title: 'List Certification Applications',
@@ -154,7 +172,7 @@ import Content from './Content'
 						},
 						{
 							title: 'Master Data',
-							icon: 'dashboard',
+							icon: 'storage',
 						}
 					]
 				},
@@ -162,13 +180,16 @@ import Content from './Content'
 					title: 'Exams',
 					icon: 'list_alt',
 					items: [{
-							title: 'Add Exam'
+							title: 'Add Exam',
+							icon: 'add_circle'
 						},
 						{
-							title: 'List Exams'
+							title: 'List Exams',
+							icon: 'list'
 						},
 						{
-							title: 'Master Data'
+							title: 'Master Data',
+							icon: 'storage',
 						}
 
 					]
@@ -177,20 +198,24 @@ import Content from './Content'
 					title: 'Code Editions',
 					icon: 'menu',
 					items: [{
-							title: 'Add Code Edition'
+							title: 'Add Code Edition',
+							icon: 'add_circle'
 						},
 						{
-							title: 'List Code Editions'
+							title: 'List Code Editions',
+							icon: 'list'
 						}
 					]
 				},
 				{
 					title: 'Jurisdictions',
 					items: [{
-							title: 'Add Jurisdiction'
+							title: 'Add Jurisdiction',
+							icon: 'add_circle'
 						},
 						{
-							title: 'List Jurisdictions'
+							title: 'List Jurisdictions',
+							icon: 'list'
 						}
 
 					]
@@ -199,10 +224,12 @@ import Content from './Content'
 					title: 'Jurisdiction Contacts',
 					icon: 'contacts',
 					items: [{
-							title: 'Add Jurisdiction Contact'
+							title: 'Add Jurisdiction Contact',
+							icon: 'add_circle'
 						},
 						{
-							title: 'List Jurisdiction Contacts'
+							title: 'List Jurisdiction Contacts',
+							icon: 'list'
 						}
 
 					]
@@ -211,10 +238,12 @@ import Content from './Content'
 					title: 'Exam Sites',
 					icon: 'public',
 					items: [{
-							title: 'Add Exam Site'
+							title: 'Add Exam Site',
+							icon: 'add_circle'
 						},
 						{
-							title: 'List Exam Sites'
+							title: 'List Exam Sites',
+							icon: 'list'
 						}
 					]
 				},
@@ -222,10 +251,12 @@ import Content from './Content'
 					title: 'Site Contacts',
 					icon: 'public',
 					items: [{
-							title: 'Add Site Contact'
+							title: 'Add Site Contact',
+							icon: 'add_circle'
 						},
 						{
-							title: 'List Site Contacts'
+							title: 'List Site Contacts',
+							icon: 'list'
 						}
 					]
 				},
@@ -233,10 +264,12 @@ import Content from './Content'
 					title: 'Site Proctors',
 					icon: 'public',
 					items: [{
-							title: 'Add Site Proctor'
+							title: 'Add Site Proctor',
+							icon: 'add_circle'
 						},
 						{
-							title: 'List Site Proctors'
+							title: 'List Site Proctors',
+							icon: 'list'
 						}
 					]
 				},
@@ -244,10 +277,12 @@ import Content from './Content'
 					title: 'Letters',
 					icon: 'mail',
 					items: [{
-							title: 'Add Letter'
+							title: 'Add Letter',
+							icon: 'add_circle'
 						},
 						{
-							title: 'List Letters'
+							title: 'List Letters',
+							icon: 'list'
 						},
 						{
 							title: 'Individual Confirmation Letter'
@@ -267,16 +302,20 @@ import Content from './Content'
 					title: 'Candidates',
 					icon: 'person',
 					items: [{
-							title: 'Add Candidate'
+							title: 'Add Candidate',
+							icon: 'add_circle'
 						},
 						{
-							title: 'List Candidates'
+							title: 'List Candidates',
+							icon: 'list'
 						},
 						{
-							title: 'List All Transcripts'
+							title: 'List All Transcripts',
+							icon: 'list'
 						},
 						{
-							title: 'Master Data'
+							title: 'Master Data',
+							icon: 'storage',
 						}
 					]
 				},
@@ -294,10 +333,12 @@ import Content from './Content'
 					title: 'Review Anomalies',
 					icon: 'person',
 					items: [{
-							title: 'List Candidate Anomalies'
+							title: 'List Candidate Anomalies',
+							icon: 'list'
 						},
 						{
-							title: 'List Transcript Anomalies'
+							title: 'List Transcript Anomalies',
+							icon: 'list'
 						}
 					]
 				},
@@ -308,7 +349,8 @@ import Content from './Content'
 							title: 'Reporting Tool'
 						},
 						{
-							title: 'List of participants Report'
+							title: 'List of participants Report',
+							icon: 'list'
 						},
 						{
 							title: 'Participants Count Report'
@@ -366,3 +408,15 @@ import Content from './Content'
 
 	} 
 </script>
+
+<style>
+.v-list__group__header__prepend-icon .v-icon {
+    color: purple;
+} 
+
+.v-input__icon--append .v-icon { 
+    color: purple;
+}
+
+</style>
+

@@ -1,5 +1,22 @@
 <template>
-    <v-footer class="deep-purple" style="z-index:10">
-            <span class="caption" >&copy;2019 International Code Council, Inc. </span>
-    </v-footer>
+    <v-footer 
+         height="auto"
+         style="z-index:5"
+         >
+         <v-layout
+            justify-center
+            row
+            wrap
+            class="deep-purple"
+            >
+            <v-flex
+               py-3
+               text-xs-center
+               xs12
+               class="deep-purple"
+               >
+               &copy;2019 International Code Council, Inc. 
+            </v-flex>
+         </v-layout>
+      </v-footer>
 </template>
